@@ -10,13 +10,13 @@ abstract class CategoryDbFunctions {
 
 class CategoryDB implements CategoryDbFunctions {
   @override
-  Future<void> insertCategory(CategoryModel value) async {
+  Future<void>insertCategory(CategoryModel value) async {
     final _categoryDB = await Hive.openBox<CategoryModel>(Category_DB_Name);
     await _categoryDB.add(value);
   }
 
   @override
-  Future<List<CategoryModel>> getCategories() async {
+  Future<List<CategoryModel>>getCategories() async {
     final _categoryDB = await Hive.openBox<CategoryModel>(Category_DB_Name);
     return _categoryDB.values.toList();
   }
