@@ -6,10 +6,10 @@ import 'package:money_management/screen/home/screen_home.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Hive.initFlutter();
-  if (Hive.isAdapterRegistered(CategoryTypeAdapter().typeId)) {
+  if (!Hive.isAdapterRegistered(CategoryTypeAdapter().typeId)) {
     Hive.registerAdapter(CategoryTypeAdapter());
   }
-  if (Hive.isAdapterRegistered(CategoryModelAdapter().typeId)) {
+  if (!Hive.isAdapterRegistered(CategoryModelAdapter().typeId)) {
     Hive.registerAdapter(CategoryModelAdapter());
   }
   runApp(MyApp());
