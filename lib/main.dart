@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:money_management/models/category/category_model.dart';
+import 'package:money_management/screen/add_transaction/screen_add_transaction.dart';
 import 'package:money_management/screen/home/screen_home.dart';
 
 Future<void> main() async {
@@ -23,6 +24,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(primaryColor: Colors.blue),
       home: ScreenHome(),
+      routes: {
+        ScreenAddTransaction.routename:(ctx)=>ScreenAddTransaction()
+      },
     );
   }
 }
