@@ -1,31 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:money_management/db/category/category_db.dart';
+import 'package:money_management/db/transaction/transactiondb.dart';
+import 'package:money_management/models/category/category_model.dart';
+import 'package:money_management/models/transaction/transation_model.dart';
 
 class ScreenTransaction extends StatelessWidget {
   const ScreenTransaction({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ListView.separated(
-      padding: EdgeInsets.all(2),
-      itemBuilder: (context, index) {
-        return const Card(
-          child: ListTile(
-            leading: CircleAvatar(
-              radius: 50,
-              child: Text(
-                "01\nMar",
-                textAlign: TextAlign.center,
+    TransactionDB.instance.refresh();
+    CategoryDB.instance.refresh();
+    return ValueListenableBuilder(
+      valueListenable: TransactionDB.instance.transactionListNotifier,
+      builder: (
+        BuildContext context,
+        List<TransactionModel> newList,
+        _,
+      ) {
+        return ListView.separated(
+          padding: EdgeInsets.all(2),
+          itemBuilder: (context, index) {
+            final _value = newList[index];
+            return Card(
+              child: ListTile(
+                leading: CircleAvatar(
+                  radius: 50,
+                  child: Text(
+                    parseDate(_value.date),
+                    textAlign: TextAlign.center,
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  backgroundColor: _value.type == CategoryType.income
+                      ? Colors.green
+                      : Colors.red,
+                ),
+                title: Text("Rs ${_value.amount}"),
+                subtitle: Text(_value.category.name),
               ),
-            ),
-            title: Text("1000 Rs"),
-            subtitle: Text("Travel"),
+            );
+          },
+          separatorBuilder: (context, index) => SizedBox(
+            height: 2,
           ),
+          itemCount: newList.length,
         );
       },
-      separatorBuilder: (context, index) => SizedBox(
-        height: 2,
-      ),
-      itemCount: 20,
     );
+  }
+
+  String parseDate(DateTime date) {
+    final _date = DateFormat.MMMd().format(date);
+    final _splitDate = _date.split(" ");
+    return "${_splitDate.last}\n${_splitDate.first}";
+    //return '${date.day}\n${date.month}';
   }
 }

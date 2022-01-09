@@ -182,6 +182,8 @@ class _ScreenAddTransactionState extends State<ScreenAddTransaction> {
         type: _selectedcategorytype!,
         category: _selectedcategorymodel!);
 
-    TransactionDB.instance.addTransaction(_model);
+    await TransactionDB.instance.addTransaction(_model);
+    Navigator.of(context).pop();
+    TransactionDB.instance.refresh();
   }
 }
